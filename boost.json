@@ -1,0 +1,14 @@
+{
+    "agents": [
+        "antigravity"
+    ],
+    "cloud": false,
+    "guidelines": true,
+    "skills": [
+        "laravel-best-practices",
+        "octane-development",
+        "wayfinder-development",
+        "pest-testing",
+        "tailwindcss-development"
+    ]
+}

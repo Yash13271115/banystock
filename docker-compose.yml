@@ -1,0 +1,96 @@
+name: banystock-dev
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: banystock-dev-app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+      - "5173:5173"
+    environment:
+      APP_NAME: "${APP_NAME:-Banystock}"
+      APP_ENV: "${APP_ENV:-local}"
+      APP_KEY: "${APP_KEY:-base64:oTxLUFic0tg2RuiITqVfJSW/7yMmBHy9hezgZm66/zM=}"
+      APP_DEBUG: "${APP_DEBUG:-true}"
+      APP_URL: "${APP_URL:-http://localhost:8000}"
+      OCTANE_SERVER: frankenphp
+      SERVER_NAME: ":8000"
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: banystock
+      DB_USERNAME: sail
+      DB_PASSWORD: password
+      CACHE_STORE: redis
+      QUEUE_CONNECTION: redis
+      SESSION_DRIVER: redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MAIL_MAILER: smtp
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+      MAIL_FROM_ADDRESS: "hello@example.com"
+      MAIL_FROM_NAME: "${APP_NAME:-Banystock}"
+      VITE_APP_NAME: "${APP_NAME:-Banystock}"
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/node_modules
+    depends_on:
+      mysql:
+        condition: service_started
+      redis:
+        condition: service_started
+      mailpit:
+        condition: service_started
+    networks:
+      - banystock-net
+
+  mysql:
+    image: mysql:8.0
+    container_name: banystock-dev-mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: banystock
+      MYSQL_USER: sail
+      MYSQL_PASSWORD: password
+    volumes:
+      - banystock-mysql:/var/lib/mysql
+    networks:
+      - banystock-net
+
+  redis:
+    image: redis:alpine
+    container_name: banystock-dev-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - banystock-redis:/data
+    networks:
+      - banystock-net
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: banystock-dev-mailpit
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - banystock-net
+
+networks:
+  banystock-net:
+    driver: bridge
+
+volumes:
+  banystock-mysql:
+    driver: local
+  banystock-redis:
+    driver: local
