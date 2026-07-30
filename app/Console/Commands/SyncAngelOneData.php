@@ -6,7 +6,7 @@ use App\Models\AngelOneTopGainer;
 use App\Models\User;
 use App\Services\AngelOneService;
 use Illuminate\Console\Command;
-use PragmaRX\Google2FA\Google2FA;
+use OTPHP\TOTP as OtphpTotp;
 
 class SyncAngelOneData extends Command
 {
@@ -36,12 +36,22 @@ class SyncAngelOneData extends Command
         $apiKey = env('ANGELONE_API_KEY');
 
         // Dynamically generate current 6-digit TOTP if TOTP secret is provided in .env
-        if ($totpSecret && class_exists(Google2FA::class)) {
+        if ($totpSecret) {
             try {
-                // Sanitize base32 key (remove spaces, hyphens, and convert to uppercase)
-                $cleanSecret = strtoupper(preg_replace('/[^a-z2-7]/i', '', $totpSecret));
-                $google2fa = new Google2FA;
-                $totp = $google2fa->getCurrentOtp($cleanSecret);
+                // Sanitize base32 key: uppercase, strip non-Base32 chars, pad to valid length
+                $cleanSecret = strtoupper(preg_replace('/[^A-Za-z2-7]/', '', $totpSecret));
+
+                // Ensure proper Base32 padding (must be multiple of 8)
+                $remainder = strlen($cleanSecret) % 8;
+                if ($remainder !== 0) {
+                    $cleanSecret .= str_repeat('=', 8 - $remainder);
+                }
+
+                $otpInstance = OtphpTotp::createFromSecret($cleanSecret);
+                $otpInstance->setPeriod(30);
+                $otpInstance->setDigits(6);
+                $otpInstance->setDigest('sha1');
+                $totp = $otpInstance->now();
                 $this->info("Generated dynamic 6-digit TOTP code: {$totp}");
             } catch (\Throwable $e) {
                 $this->warn("Failed to generate TOTP from secret: {$e->getMessage()}");
