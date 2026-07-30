@@ -1,14 +1,14 @@
 {
-  "_BanyaStockLogo-COTupSTR.js": {
-    "file": "assets/BanyaStockLogo-COTupSTR.js",
+  "_BanyaStockLogo-C_X_TKCY.js": {
+    "file": "assets/BanyaStockLogo-C_X_TKCY.js",
     "name": "BanyaStockLogo",
     "imports": [
       "resources/js/app.tsx",
-      "_compiler-runtime-Cop6EytC.js"
+      "_compiler-runtime-CbM0lGqA.js"
     ]
   },
-  "_compiler-runtime-Cop6EytC.js": {
-    "file": "assets/compiler-runtime-Cop6EytC.js",
+  "_compiler-runtime-CbM0lGqA.js": {
+    "file": "assets/compiler-runtime-CbM0lGqA.js",
     "name": "compiler-runtime",
     "imports": [
       "resources/js/app.tsx"
@@ -43,7 +43,7 @@
     "src": "_instrument-sans-600-normal-B9e8oLYv.woff"
   },
   "resources/css/app.css": {
-    "file": "assets/app-Da26qL0c.css",
+    "file": "assets/app-RwZES3qL.css",
     "name": "app",
     "names": [
       "app.css"
@@ -52,7 +52,7 @@
     "isEntry": true
   },
   "resources/js/app.tsx": {
-    "file": "assets/app-BLxpM-SD.js",
+    "file": "assets/app-Dnf_6bEe.js",
     "name": "app",
     "src": "resources/js/app.tsx",
     "isEntry": true,
@@ -62,39 +62,39 @@
       "resources/js/pages/welcome.tsx"
     ],
     "css": [
-      "assets/app-Da26qL0c.css"
+      "assets/app-RwZES3qL.css"
     ]
   },
   "resources/js/pages/auth/login.tsx": {
-    "file": "assets/login-B4KWC-Au.js",
+    "file": "assets/login-DtPGfCVD.js",
     "name": "login",
     "src": "resources/js/pages/auth/login.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.tsx",
-      "_compiler-runtime-Cop6EytC.js",
-      "_BanyaStockLogo-COTupSTR.js"
+      "_compiler-runtime-CbM0lGqA.js",
+      "_BanyaStockLogo-C_X_TKCY.js"
     ]
   },
   "resources/js/pages/dashboard.tsx": {
-    "file": "assets/dashboard-BFzOhVZQ.js",
+    "file": "assets/dashboard-C5x_gsDv.js",
     "name": "dashboard",
     "src": "resources/js/pages/dashboard.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.tsx",
-      "_compiler-runtime-Cop6EytC.js",
-      "_BanyaStockLogo-COTupSTR.js"
+      "_compiler-runtime-CbM0lGqA.js",
+      "_BanyaStockLogo-C_X_TKCY.js"
     ]
   },
   "resources/js/pages/welcome.tsx": {
-    "file": "assets/welcome-Ms-R-6N9.js",
+    "file": "assets/welcome-SZAicVYj.js",
     "name": "welcome",
     "src": "resources/js/pages/welcome.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.tsx",
-      "_compiler-runtime-Cop6EytC.js"
+      "_compiler-runtime-CbM0lGqA.js"
     ]
   }
 }
