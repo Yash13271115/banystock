@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\User;
 use App\Services\AngelOneService;
 use Illuminate\Console\Command;
+use PragmaRX\Google2FA\Google2FA;
 
 class SyncAngelOneData extends Command
 {
@@ -29,11 +30,23 @@ class SyncAngelOneData extends Command
     {
         $clientCode = env('ANGELONE_CLIENT_CODE');
         $password = env('ANGELONE_PASSWORD');
+        $totpSecret = env('ANGELONE_TOTP_SECRET');
         $totp = env('ANGELONE_TOTP');
         $apiKey = env('ANGELONE_API_KEY');
 
+        // Dynamically generate current 6-digit TOTP if TOTP secret is provided in .env
+        if ($totpSecret && class_exists(Google2FA::class)) {
+            try {
+                $google2fa = new Google2FA;
+                $totp = $google2fa->getCurrentOtp($totpSecret);
+                $this->info("Generated dynamic 6-digit TOTP code: {$totp}");
+            } catch (\Throwable $e) {
+                $this->warn("Failed to generate TOTP from secret: {$e->getMessage()}");
+            }
+        }
+
         if (! $clientCode || ! $password || ! $totp || ! $apiKey) {
-            $this->error('Missing required AngelOne credentials in .env (ANGELONE_CLIENT_CODE, ANGELONE_PASSWORD, ANGELONE_TOTP, ANGELONE_API_KEY).');
+            $this->error('Missing required AngelOne credentials in .env (ANGELONE_CLIENT_CODE, ANGELONE_PASSWORD, ANGELONE_TOTP or ANGELONE_TOTP_SECRET, ANGELONE_API_KEY).');
 
             return Command::FAILURE;
         }
