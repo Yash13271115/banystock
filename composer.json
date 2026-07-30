@@ -17,7 +17,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
         "laravel/wayfinder": "^0.1.14",
-        "pragmarx/google2fa": "*"
+        "pragmarx/google2fa": "^9.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.4",

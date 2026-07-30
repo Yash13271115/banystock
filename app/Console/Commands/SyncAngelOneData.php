@@ -37,8 +37,10 @@ class SyncAngelOneData extends Command
         // Dynamically generate current 6-digit TOTP if TOTP secret is provided in .env
         if ($totpSecret && class_exists(Google2FA::class)) {
             try {
+                // Sanitize base32 key (remove spaces, hyphens, and convert to uppercase)
+                $cleanSecret = strtoupper(preg_replace('/[^a-z2-7]/i', '', $totpSecret));
                 $google2fa = new Google2FA;
-                $totp = $google2fa->getCurrentOtp($totpSecret);
+                $totp = $google2fa->getCurrentOtp($cleanSecret);
                 $this->info("Generated dynamic 6-digit TOTP code: {$totp}");
             } catch (\Throwable $e) {
                 $this->warn("Failed to generate TOTP from secret: {$e->getMessage()}");
