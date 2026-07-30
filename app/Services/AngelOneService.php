@@ -118,6 +118,9 @@ class AngelOneService
                 'Accept' => 'application/json',
                 'X-UserType' => 'USER',
                 'X-SourceID' => 'WEB',
+                'X-ClientLocalIP' => '127.0.0.1',
+                'X-ClientPublicIP' => '127.0.0.1',
+                'X-MACAddress' => '00-00-00-00-00-00',
                 'X-PrivateKey' => $apiKey,
             ])->get("{$this->baseUrl}/rest/secure/angelbroking/user/v1/getProfile");
 
@@ -176,6 +179,9 @@ class AngelOneService
                 'Accept' => 'application/json',
                 'X-UserType' => 'USER',
                 'X-SourceID' => 'WEB',
+                'X-ClientLocalIP' => '127.0.0.1',
+                'X-ClientPublicIP' => '127.0.0.1',
+                'X-MACAddress' => '00-00-00-00-00-00',
                 'X-PrivateKey' => $apiKey,
             ])->get("{$this->baseUrl}/rest/secure/angelbroking/user/v1/getRMS");
 
@@ -262,6 +268,9 @@ class AngelOneService
                 'Accept' => 'application/json',
                 'X-UserType' => 'USER',
                 'X-SourceID' => 'WEB',
+                'X-ClientLocalIP' => '127.0.0.1',
+                'X-ClientPublicIP' => '127.0.0.1',
+                'X-MACAddress' => '00-00-00-00-00-00',
                 'X-PrivateKey' => $apiKey,
             ])->post("{$this->baseUrl}/rest/secure/angelbroking/marketData/v1/topGainersLosers", [
                 'datatype' => $datatype,

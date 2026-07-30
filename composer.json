@@ -17,7 +17,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
         "laravel/wayfinder": "^0.1.14",
-        "spomky-labs/otphp": "*"
+        "spomky-labs/otphp": "^11.5"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.4",
