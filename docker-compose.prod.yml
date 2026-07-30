@@ -44,7 +44,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD:-rootsecret}"
-      MYSQL_DATABASE: "${DB_DATABASE:-banystock}"
+      MYSQL_DATABASE: "${DB_DATABASE}"
       MYSQL_USER: "${DB_USERNAME}"
       MYSQL_PASSWORD: "${DB_PASSWORD}"
     volumes:
