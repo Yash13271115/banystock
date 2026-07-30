@@ -29,6 +29,7 @@ services:
       REDIS_PASSWORD: "${REDIS_PASSWORD:-secret}"
       MAIL_MAILER: "${MAIL_MAILER:-log}"
     volumes:
+      - ./.env:/var/www/html/.env
       - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
       mysql:
