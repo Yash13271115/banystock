@@ -29,6 +29,10 @@ services:
       REDIS_PORT: 6379
       REDIS_PASSWORD: "${REDIS_PASSWORD:-secret}"
       MAIL_MAILER: "${MAIL_MAILER:-log}"
+      ANGELONE_CLIENT_CODE: "${ANGELONE_CLIENT_CODE}"
+      ANGELONE_PASSWORD: "${ANGELONE_PASSWORD}"
+      ANGELONE_TOTP: "${ANGELONE_TOTP}"
+      ANGELONE_API_KEY: "${ANGELONE_API_KEY}"
     volumes:
       - ./.env:/var/www/html/.env
       - /etc/letsencrypt:/etc/letsencrypt:ro
