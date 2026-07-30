@@ -18,18 +18,23 @@ class AngelOneController extends Controller
      */
     public function login(Request $request): JsonResponse
     {
-        $validated = $request->validate([
-            'client_code' => 'required|string',
-            'password' => 'required|string',
-            'totp' => 'required|string',
-            'api_key' => 'required|string',
-        ]);
+        $clientCode = $request->input('client_code', config('services.angelone.client_code', env('ANGELONE_CLIENT_CODE')));
+        $password = $request->input('password', config('services.angelone.password', env('ANGELONE_PASSWORD')));
+        $totp = $request->input('totp', config('services.angelone.totp', env('ANGELONE_TOTP')));
+        $apiKey = $request->input('api_key', config('services.angelone.api_key', env('ANGELONE_API_KEY')));
+
+        if (! $clientCode || ! $password || ! $totp || ! $apiKey) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Missing required AngelOne credentials (client_code, password, totp, api_key). Please provide them in the request body or configure them in your .env file.',
+            ], 422);
+        }
 
         $authResult = $this->angelOneService->loginByPassword(
-            $validated['client_code'],
-            $validated['password'],
-            $validated['totp'],
-            $validated['api_key']
+            $clientCode,
+            $password,
+            $totp,
+            $apiKey
         );
 
         if (! $authResult['success']) {
@@ -43,10 +48,10 @@ class AngelOneController extends Controller
         $user = $request->user();
 
         // Fetch & save Profile
-        $profileResult = $this->angelOneService->fetchAndSaveProfile($user, $jwtToken, $validated['api_key']);
+        $profileResult = $this->angelOneService->fetchAndSaveProfile($user, $jwtToken, $apiKey);
 
         // Fetch & save RMS
-        $rmsResult = $this->angelOneService->fetchAndSaveRms($user, $jwtToken, $validated['api_key'], $validated['client_code']);
+        $rmsResult = $this->angelOneService->fetchAndSaveRms($user, $jwtToken, $apiKey, $clientCode);
 
         return response()->json([
             'success' => true,
