@@ -8,6 +8,11 @@ use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
 use Laravel\Telescope\TelescopeApplicationServiceProvider;
 
+if (! class_exists(TelescopeApplicationServiceProvider::class)) {
+    class DummyTelescopeServiceProvider extends \Illuminate\Support\ServiceProvider {}
+    class_alias(DummyTelescopeServiceProvider::class, TelescopeApplicationServiceProvider::class);
+}
+
 class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 {
     /**
