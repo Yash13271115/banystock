@@ -15,6 +15,9 @@ mkdir -p storage/framework/cache storage/framework/sessions storage/framework/vi
 chown -R www-data:www-data storage bootstrap/cache
 chmod -R 775 storage bootstrap/cache
 
+# Ensure clean bootstrap cache before optimizing
+rm -f bootstrap/cache/config.php bootstrap/cache/routes-v7.php bootstrap/cache/packages.php bootstrap/cache/services.php
+
 # Run optimizations
 echo "Caching Laravel configuration and routes..."
 php artisan config:cache
