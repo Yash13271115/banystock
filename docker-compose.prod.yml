@@ -13,7 +13,6 @@ services:
     environment:
       APP_NAME: "${APP_NAME:-Banystock}"
       APP_ENV: production
-      APP_KEY: "${APP_KEY}"
       APP_DEBUG: "false"
       APP_URL: "${APP_URL}"
       FRANKENPHP_WORKERS: 4
