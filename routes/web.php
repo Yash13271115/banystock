@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\AngelOneController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\UserDataController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -20,10 +21,19 @@ Route::middleware(['auth'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 
-    // AngelOne SmartAPI Integration Routes
-    Route::prefix('api/angelone')->group(function () {
-        Route::post('/login', [AngelOneController::class, 'login']);
-        Route::get('/profile', [AngelOneController::class, 'getProfile']);
-        Route::get('/rms', [AngelOneController::class, 'getRms']);
+    // Public Mobile & External API Routes (Sanctum Token Auth)
+    Route::prefix('api/v1')->group(function () {
+        // Authentication
+        Route::post('/auth/login', [AuthController::class, 'login']);
+
+        // Protected User Data Endpoints (Requires Bearer token)
+        Route::middleware('auth:sanctum')->group(function () {
+            Route::post('/auth/logout', [AuthController::class, 'logout']);
+            Route::get('/auth/me', [AuthController::class, 'me']);
+
+            // Data Provider Endpoints (Serves AngelOne data stored in DB)
+            Route::get('/user/profile', [UserDataController::class, 'getProfile']);
+            Route::get('/user/rms', [UserDataController::class, 'getRms']);
+        });
     });
 });
