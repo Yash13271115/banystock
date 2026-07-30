@@ -1,21 +1,5 @@
 # ===================================================
-# Stage 1: Frontend Asset Builder
-# ===================================================
-FROM node:22-alpine AS frontend-builder
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm ci
-
-COPY vite.config.ts tsconfig.json package.json ./
-COPY resources/ ./resources/
-COPY public/ ./public/
-
-ENV VITE_DOCKER_BUILD=1
-RUN npm run build
-
-# ===================================================
-# Stage 2: PHP Production Vendor Builder
+# Stage 1: PHP Production Vendor Builder
 # ===================================================
 FROM php:8.4-cli-alpine AS vendor-builder
 WORKDIR /app
@@ -83,8 +67,7 @@ RUN echo "opcache.memory_consumption=128" >> /usr/local/etc/php/conf.d/docker-ph
 # Copy application files
 COPY . /var/www/html
 
-# Copy compiled assets from Stage 1 and vendors from Stage 2
-COPY --from=frontend-builder /app/public/build /var/www/html/public/build
+# Copy vendors from Stage 1
 COPY --from=vendor-builder /app/vendor /var/www/html/vendor
 
 # Configure Nginx
