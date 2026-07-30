@@ -9,6 +9,7 @@
         "octane-development",
         "wayfinder-development",
         "pest-testing",
+        "inertia-react-development",
         "tailwindcss-development"
     ]
 }
