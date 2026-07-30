@@ -12,7 +12,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 
-        @vite(['resources/css/app.css', 'resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
+        @vite(['resources/css/app.css', 'resources/js/app.tsx'])
         <x-inertia::head>
             <title>{{ config('app.name', 'Laravel') }}</title>
         </x-inertia::head>
