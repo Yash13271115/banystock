@@ -43,6 +43,7 @@ export default defineConfig({
         tailwindcss(),
         wayfinder({
             formVariants: true,
+            enabled: !process.env.VITE_DOCKER_BUILD,
         }),
     ],
 });

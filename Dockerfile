@@ -11,6 +11,7 @@ COPY vite.config.ts tsconfig.json package.json ./
 COPY resources/ ./resources/
 COPY public/ ./public/
 
+ENV VITE_DOCKER_BUILD=1
 RUN npm run build
 
 # ===================================================
