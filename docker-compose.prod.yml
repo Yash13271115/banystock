@@ -9,6 +9,7 @@ services:
     restart: always
     ports:
       - "${PORT:-80}:80"
+      - "443:443"
     environment:
       APP_NAME: "${APP_NAME:-Banystock}"
       APP_ENV: production
@@ -29,6 +30,8 @@ services:
       REDIS_PORT: 6379
       REDIS_PASSWORD: "${REDIS_PASSWORD:-secret}"
       MAIL_MAILER: "${MAIL_MAILER:-log}"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
       mysql:
         condition: service_started
