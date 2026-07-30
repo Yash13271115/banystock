@@ -2,9 +2,7 @@ name: banystock-prod
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: yash1115/banystock:latest
     container_name: banystock-prod-app
     restart: always
     ports:
