@@ -116,6 +116,8 @@ class AngelOneService
                 'Authorization' => "Bearer {$jwtToken}",
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
+                'X-UserType' => 'USER',
+                'X-SourceID' => 'WEB',
                 'X-PrivateKey' => $apiKey,
             ])->get("{$this->baseUrl}/rest/secure/angelbroking/user/v1/getProfile");
 
@@ -172,6 +174,8 @@ class AngelOneService
                 'Authorization' => "Bearer {$jwtToken}",
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
+                'X-UserType' => 'USER',
+                'X-SourceID' => 'WEB',
                 'X-PrivateKey' => $apiKey,
             ])->get("{$this->baseUrl}/rest/secure/angelbroking/user/v1/getRMS");
 
