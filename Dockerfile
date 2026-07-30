@@ -18,8 +18,9 @@ COPY bootstrap/ ./bootstrap/
 COPY config/ ./config/
 COPY database/ ./database/
 COPY routes/ ./routes/
+COPY artisan ./
 
-RUN composer dump-autoload --optimize --no-dev
+RUN composer dump-autoload --optimize --no-dev --no-scripts
 
 # ===================================================
 # Stage 3: Production Runtime (PHP-FPM + Nginx)
