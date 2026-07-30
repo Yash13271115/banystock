@@ -1,14 +1,14 @@
 {
-  "_BanyaStockLogo-B7GHfkRq.js": {
-    "file": "assets/BanyaStockLogo-B7GHfkRq.js",
+  "_BanyaStockLogo-COTupSTR.js": {
+    "file": "assets/BanyaStockLogo-COTupSTR.js",
     "name": "BanyaStockLogo",
     "imports": [
       "resources/js/app.tsx",
-      "_compiler-runtime-e7xwKz8O.js"
+      "_compiler-runtime-Cop6EytC.js"
     ]
   },
-  "_compiler-runtime-e7xwKz8O.js": {
-    "file": "assets/compiler-runtime-e7xwKz8O.js",
+  "_compiler-runtime-Cop6EytC.js": {
+    "file": "assets/compiler-runtime-Cop6EytC.js",
     "name": "compiler-runtime",
     "imports": [
       "resources/js/app.tsx"
@@ -52,7 +52,7 @@
     "isEntry": true
   },
   "resources/js/app.tsx": {
-    "file": "assets/app-D4BDaUXo.js",
+    "file": "assets/app-BLxpM-SD.js",
     "name": "app",
     "src": "resources/js/app.tsx",
     "isEntry": true,
@@ -66,35 +66,35 @@
     ]
   },
   "resources/js/pages/auth/login.tsx": {
-    "file": "assets/login-wMMA6v3Y.js",
+    "file": "assets/login-B4KWC-Au.js",
     "name": "login",
     "src": "resources/js/pages/auth/login.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.tsx",
-      "_compiler-runtime-e7xwKz8O.js",
-      "_BanyaStockLogo-B7GHfkRq.js"
+      "_compiler-runtime-Cop6EytC.js",
+      "_BanyaStockLogo-COTupSTR.js"
     ]
   },
   "resources/js/pages/dashboard.tsx": {
-    "file": "assets/dashboard-ZP77R1gx.js",
+    "file": "assets/dashboard-BFzOhVZQ.js",
     "name": "dashboard",
     "src": "resources/js/pages/dashboard.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.tsx",
-      "_compiler-runtime-e7xwKz8O.js",
-      "_BanyaStockLogo-B7GHfkRq.js"
+      "_compiler-runtime-Cop6EytC.js",
+      "_BanyaStockLogo-COTupSTR.js"
     ]
   },
   "resources/js/pages/welcome.tsx": {
-    "file": "assets/welcome-DY5HDjm6.js",
+    "file": "assets/welcome-Ms-R-6N9.js",
     "name": "welcome",
     "src": "resources/js/pages/welcome.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.tsx",
-      "_compiler-runtime-e7xwKz8O.js"
+      "_compiler-runtime-Cop6EytC.js"
     ]
   }
 }

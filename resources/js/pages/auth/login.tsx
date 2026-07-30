@@ -5,8 +5,8 @@ import BanyaStockLogo from '../../components/BanyaStockLogo';
 
 export default function Login() {
     const { data, setData, post, processing, errors } = useForm({
-        email: 'yash.prajapati@banystock.com',
-        password: 'bany@1115',
+        email: '',
+        password: '',
         remember: true,
     });
 
@@ -21,14 +21,6 @@ export default function Login() {
             onSuccess: () => {
                 setLoginSuccess(true);
             },
-        });
-    };
-
-    const handleFillDemo = () => {
-        setData({
-            email: 'yash.prajapati@banystock.com',
-            password: 'bany@1115',
-            remember: true,
         });
     };
 
@@ -54,24 +46,6 @@ export default function Login() {
                                 Enter your credentials to access the BanyaStock CRM Portal.
                             </p>
                         </div>
-                    </div>
-
-                    {/* Pre-filled Account Card */}
-                    <div className="p-3.5 rounded-xl bg-[#222D3E]/60 border border-[#222D3E] flex items-center justify-between text-xs">
-                        <div className="flex items-center gap-2.5">
-                            <ShieldCheck size={18} className="text-[#E5B246] shrink-0" />
-                            <div>
-                                <span className="text-slate-300 font-semibold block">Configured Admin Credentials</span>
-                                <span className="text-[#94A3B8] text-[11px]">yash.prajapati@banystock.com</span>
-                            </div>
-                        </div>
-                        <button
-                            type="button"
-                            onClick={handleFillDemo}
-                            className="px-2.5 py-1 rounded-lg bg-[#E5B246]/20 text-[#E5B246] hover:bg-[#E5B246] hover:text-[#111823] text-[11px] font-bold transition-all"
-                        >
-                            Auto-Fill
-                        </button>
                     </div>
 
                     {/* Login Card */}
