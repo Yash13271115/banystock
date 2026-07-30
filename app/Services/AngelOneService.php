@@ -248,4 +248,48 @@ class AngelOneService
             ];
         }
     }
+
+    /**
+     * Fetch Top Gainers or Losers from AngelOne SmartAPI.
+     * Endpoint: /rest/secure/angelbroking/marketData/v1/topGainersLosers
+     */
+    public function getTopGainers(string $jwtToken, string $apiKey, string $datatype = 'GAINERS', string $expirytype = 'NEAR'): array
+    {
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => "Bearer {$jwtToken}",
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'X-UserType' => 'USER',
+                'X-SourceID' => 'WEB',
+                'X-PrivateKey' => $apiKey,
+            ])->post("{$this->baseUrl}/rest/secure/angelbroking/marketData/v1/topGainersLosers", [
+                'datatype' => $datatype,
+                'expirytype' => $expirytype,
+            ]);
+
+            $json = $response->json();
+
+            if ($response->successful() && isset($json['status']) && $json['status'] === true) {
+                return [
+                    'success' => true,
+                    'data' => $json['data'] ?? [],
+                ];
+            }
+
+            return [
+                'success' => false,
+                'message' => $json['message'] ?? 'Failed to fetch Top Gainers data',
+                'data' => [],
+            ];
+        } catch (\Throwable $e) {
+            Log::error('AngelOne TopGainers Exception', ['error' => $e->getMessage()]);
+
+            return [
+                'success' => false,
+                'message' => $e->getMessage(),
+                'data' => [],
+            ];
+        }
+    }
 }

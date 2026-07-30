@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\AngelOneProfile;
 use App\Models\AngelOneRms;
+use App\Models\AngelOneTopGainer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -43,6 +44,19 @@ class UserDataController extends Controller
         return response()->json([
             'success' => true,
             'data' => $rmsLogs,
+        ]);
+    }
+
+    /**
+     * Get live AngelOne Top Gainers market data.
+     */
+    public function getTopGainers(Request $request): JsonResponse
+    {
+        $topGainers = AngelOneTopGainer::all();
+
+        return response()->json([
+            'success' => true,
+            'data' => $topGainers,
         ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\AngelOneTopGainer;
 use App\Models\User;
 use App\Services\AngelOneService;
 use Illuminate\Console\Command;
@@ -71,6 +72,25 @@ class SyncAngelOneData extends Command
 
         $this->info('Fetching and saving RMS/Margin data...');
         $rmsResult = $angelOneService->fetchAndSaveRms($user, $jwtToken, $apiKey, $clientCode);
+
+        $this->info('Fetching live Top Gainers telemetry...');
+        $topGainersResult = $angelOneService->getTopGainers($jwtToken, $apiKey, 'GAINERS', 'NEAR');
+
+        if ($topGainersResult['success'] && ! empty($topGainersResult['data'])) {
+            AngelOneTopGainer::truncate();
+            foreach ($topGainersResult['data'] as $gainer) {
+                AngelOneTopGainer::create([
+                    'trading_symbol' => $gainer['tradingSymbol'] ?? ($gainer['symboltoken'] ?? 'UNKNOWN'),
+                    'symbol_token' => $gainer['symboltoken'] ?? null,
+                    'ltp' => (float) ($gainer['ltp'] ?? 0.0),
+                    'net_change' => (float) ($gainer['netChange'] ?? 0.0),
+                    'percent_change' => (float) ($gainer['percentChange'] ?? 0.0),
+                    'data_type' => 'GAINERS',
+                    'raw_data' => $gainer,
+                ]);
+            }
+            $this->info('Top Gainers data persisted successfully to database!');
+        }
 
         if ($profileResult['success'] && $rmsResult['success']) {
             $this->info('AngelOne SmartAPI data synced successfully to database!');

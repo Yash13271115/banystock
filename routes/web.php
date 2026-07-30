@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Models\AngelOneProfile;
+use App\Models\AngelOneRms;
+use App\Models\AngelOneTopGainer;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -25,11 +28,18 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
-    Route::get('/', function () {
-        return Inertia::render('dashboard');
-    })->name('home');
+    $renderDashboard = function () {
+        $topGainers = AngelOneTopGainer::all();
+        $profile = AngelOneProfile::latest()->first();
+        $rms = AngelOneRms::latest()->first();
 
-    Route::get('/dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+        return Inertia::render('dashboard', [
+            'topGainers' => $topGainers,
+            'profile' => $profile,
+            'rms' => $rms,
+        ]);
+    };
+
+    Route::get('/', $renderDashboard)->name('home');
+    Route::get('/dashboard', $renderDashboard)->name('dashboard');
 });

@@ -30,5 +30,6 @@ Route::prefix('v1')->group(function () {
         // Data Provider Endpoints (Serves AngelOne Data from DB)
         Route::get('/user/profile', [UserDataController::class, 'getProfile']);
         Route::get('/user/rms', [UserDataController::class, 'getRms']);
+        Route::get('/user/top-gainers', [UserDataController::class, 'getTopGainers']);
     });
 });
