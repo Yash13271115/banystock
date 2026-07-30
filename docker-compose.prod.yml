@@ -5,6 +5,8 @@ services:
     image: yash1115/banystock:latest
     container_name: banystock-prod-app
     restart: always
+    env_file:
+      - .env
     ports:
       - "${PORT:-80}:80"
       - "443:443"
