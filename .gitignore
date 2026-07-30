@@ -1,4 +1,7 @@
 /.phpunit.cache
+/bootstrap/cache/*
+!/bootstrap/cache/.gitignore
+!/bootstrap/cache/.gitkeep
 /bootstrap/ssr
 /node_modules
 !/public/build
