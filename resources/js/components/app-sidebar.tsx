@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { usePage, router } from '@inertiajs/react';
+import { usePage, router, Link } from '@inertiajs/react';
 import { 
     TrendingUp, 
     Briefcase, 
@@ -11,7 +11,8 @@ import {
     SlidersHorizontal,
     LogOut,
     Building2,
-    Check
+    Check,
+    CandlestickChart
 } from 'lucide-react';
 import BanyaStockLogo from './BanyaStockLogo';
 
@@ -50,10 +51,11 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
     ];
 
     const navItems = [
-        { id: 'market', label: 'Market', icon: TrendingUp, count: null },
-        { id: 'portfolio', label: 'Portfolio', icon: Briefcase, count: '12' },
-        { id: 'watchlist', label: 'Watchlist', icon: Star, count: '24' },
-        { id: 'news', label: 'News', icon: Newspaper, count: '5' },
+        { id: 'market', label: 'Market', icon: TrendingUp, count: null, href: '/dashboard' },
+        { id: 'ticker', label: 'Ticker', icon: CandlestickChart, count: null, href: '/ticker/TATASTEEL' },
+        { id: 'portfolio', label: 'Portfolio', icon: Briefcase, count: '12', href: null },
+        { id: 'watchlist', label: 'Watchlist', icon: Star, count: '24', href: null },
+        { id: 'news', label: 'News', icon: Newspaper, count: '5', href: null },
     ];
 
     const handleLogout = () => {
@@ -128,17 +130,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                     const Icon = item.icon;
                     const isActive = activeTab === item.id;
 
-                    return (
-                        <button
-                            key={item.id}
-                            onClick={() => setActiveTab(item.id)}
-                            className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group ${
-                                isActive
-                                    ? 'bg-[#222D3E] text-[#E5B246] shadow-sm font-semibold border-l-4 border-[#E5B246]'
-                                    : 'text-[#94A3B8] hover:bg-[#222D3E]/50 hover:text-white'
-                            }`}
-                            title={collapsed ? item.label : undefined}
-                        >
+                    const buttonContent = (
+                        <>
                             <div className="flex items-center gap-3">
                                 <Icon
                                     size={20}
@@ -160,6 +153,37 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                                     {item.count}
                                 </span>
                             )}
+                        </>
+                    );
+
+                    const className = `w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group ${
+                        isActive
+                            ? 'bg-[#222D3E] text-[#E5B246] shadow-sm font-semibold border-l-4 border-[#E5B246]'
+                            : 'text-[#94A3B8] hover:bg-[#222D3E]/50 hover:text-white'
+                    }`;
+
+                    if (item.href) {
+                        return (
+                            <Link
+                                key={item.id}
+                                href={item.href}
+                                className={className}
+                                title={collapsed ? item.label : undefined}
+                                onClick={() => setActiveTab(item.id)}
+                            >
+                                {buttonContent}
+                            </Link>
+                        );
+                    }
+
+                    return (
+                        <button
+                            key={item.id}
+                            onClick={() => setActiveTab(item.id)}
+                            className={className}
+                            title={collapsed ? item.label : undefined}
+                        >
+                            {buttonContent}
                         </button>
                     );
                 })}

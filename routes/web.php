@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\TickerController;
 use App\Models\AngelOneProfile;
 use App\Models\AngelOneRms;
 use App\Models\AngelOneTopGainer;
@@ -42,4 +43,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/', $renderDashboard)->name('home');
     Route::get('/dashboard', $renderDashboard)->name('dashboard');
+
+    // Historical Ticker Page
+    Route::get('/ticker/{symbol?}', [TickerController::class, 'show'])->name('ticker');
+    Route::get('/api/ticker/history', [TickerController::class, 'history'])->name('ticker.history');
 });

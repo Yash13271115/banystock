@@ -301,4 +301,69 @@ class AngelOneService
             ];
         }
     }
+
+    /**
+     * Fetch historical candle data from SmartAPI.
+     * Endpoint: /rest/secure/angelbroking/historical/v1/getCandleData
+     *
+     * @return array{success: bool, data?: array<int, array{time: int, open: float, high: float, low: float, close: float, volume: int}>, message?: string}
+     */
+    public function getCandleData(string $jwtToken, string $apiKey, string $exchange, string $symboltoken, string $interval, string $fromdate, string $todate): array
+    {
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => "Bearer {$jwtToken}",
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'X-UserType' => 'USER',
+                'X-SourceID' => 'WEB',
+                'X-ClientLocalIP' => '127.0.0.1',
+                'X-ClientPublicIP' => '127.0.0.1',
+                'X-MACAddress' => '00-00-00-00-00-00',
+                'X-PrivateKey' => $apiKey,
+            ])->post("{$this->baseUrl}/rest/secure/angelbroking/historical/v1/getCandleData", [
+                'exchange' => $exchange,
+                'symboltoken' => $symboltoken,
+                'interval' => $interval,
+                'fromdate' => $fromdate,
+                'todate' => $todate,
+            ]);
+
+            $json = $response->json();
+
+            if ($response->successful() && isset($json['status']) && $json['status'] === true) {
+                $candles = [];
+                foreach ($json['data'] ?? [] as $candle) {
+                    // Each candle: [timestamp, open, high, low, close, volume]
+                    $candles[] = [
+                        'time' => strtotime($candle[0] ?? ''),
+                        'open' => (float) ($candle[1] ?? 0),
+                        'high' => (float) ($candle[2] ?? 0),
+                        'low' => (float) ($candle[3] ?? 0),
+                        'close' => (float) ($candle[4] ?? 0),
+                        'volume' => (int) ($candle[5] ?? 0),
+                    ];
+                }
+
+                return [
+                    'success' => true,
+                    'data' => $candles,
+                ];
+            }
+
+            return [
+                'success' => false,
+                'message' => $json['message'] ?? 'Failed to fetch candle data',
+                'data' => [],
+            ];
+        } catch (\Throwable $e) {
+            Log::error('AngelOne getCandleData Exception', ['error' => $e->getMessage()]);
+
+            return [
+                'success' => false,
+                'message' => $e->getMessage(),
+                'data' => [],
+            ];
+        }
+    }
 }
