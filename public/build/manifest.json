@@ -1,14 +1,23 @@
 {
-  "_BanyaStockLogo-B8ZWxKAD.js": {
-    "file": "assets/BanyaStockLogo-B8ZWxKAD.js",
+  "_BanyaStockLogo-oA53MxPE.js": {
+    "file": "assets/BanyaStockLogo-oA53MxPE.js",
     "name": "BanyaStockLogo",
     "imports": [
       "resources/js/app.tsx",
-      "_compiler-runtime-CzTQW_0d.js"
+      "_compiler-runtime-Bir2Re2B.js"
     ]
   },
-  "_compiler-runtime-CzTQW_0d.js": {
-    "file": "assets/compiler-runtime-CzTQW_0d.js",
+  "_app-sidebar-C1s_UlUS.js": {
+    "file": "assets/app-sidebar-C1s_UlUS.js",
+    "name": "app-sidebar",
+    "imports": [
+      "resources/js/app.tsx",
+      "_compiler-runtime-Bir2Re2B.js",
+      "_BanyaStockLogo-oA53MxPE.js"
+    ]
+  },
+  "_compiler-runtime-Bir2Re2B.js": {
+    "file": "assets/compiler-runtime-Bir2Re2B.js",
     "name": "compiler-runtime",
     "imports": [
       "resources/js/app.tsx"
@@ -43,7 +52,7 @@
     "src": "_instrument-sans-600-normal-B9e8oLYv.woff"
   },
   "resources/css/app.css": {
-    "file": "assets/app-audajN1E.css",
+    "file": "assets/app-Dkor6YJN.css",
     "name": "app",
     "names": [
       "app.css"
@@ -52,49 +61,62 @@
     "isEntry": true
   },
   "resources/js/app.tsx": {
-    "file": "assets/app-KXM4HnUY.js",
+    "file": "assets/app-DmH5HcHy.js",
     "name": "app",
     "src": "resources/js/app.tsx",
     "isEntry": true,
     "dynamicImports": [
       "resources/js/pages/auth/login.tsx",
       "resources/js/pages/dashboard.tsx",
+      "resources/js/pages/ticker.tsx",
       "resources/js/pages/welcome.tsx"
     ],
     "css": [
-      "assets/app-audajN1E.css"
+      "assets/app-Dkor6YJN.css"
     ]
   },
   "resources/js/pages/auth/login.tsx": {
-    "file": "assets/login-BAeOEsGM.js",
+    "file": "assets/login-BImILww3.js",
     "name": "login",
     "src": "resources/js/pages/auth/login.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.tsx",
-      "_compiler-runtime-CzTQW_0d.js",
-      "_BanyaStockLogo-B8ZWxKAD.js"
+      "_compiler-runtime-Bir2Re2B.js",
+      "_BanyaStockLogo-oA53MxPE.js"
     ]
   },
   "resources/js/pages/dashboard.tsx": {
-    "file": "assets/dashboard-CCTpZB5P.js",
+    "file": "assets/dashboard-D0bGn23A.js",
     "name": "dashboard",
     "src": "resources/js/pages/dashboard.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.tsx",
-      "_compiler-runtime-CzTQW_0d.js",
-      "_BanyaStockLogo-B8ZWxKAD.js"
+      "_compiler-runtime-Bir2Re2B.js",
+      "_BanyaStockLogo-oA53MxPE.js",
+      "_app-sidebar-C1s_UlUS.js"
+    ]
+  },
+  "resources/js/pages/ticker.tsx": {
+    "file": "assets/ticker-Dm-CyuE9.js",
+    "name": "ticker",
+    "src": "resources/js/pages/ticker.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_BanyaStockLogo-oA53MxPE.js",
+      "_app-sidebar-C1s_UlUS.js"
     ]
   },
   "resources/js/pages/welcome.tsx": {
-    "file": "assets/welcome-YRKrF9tZ.js",
+    "file": "assets/welcome-C4h6bJsy.js",
     "name": "welcome",
     "src": "resources/js/pages/welcome.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.tsx",
-      "_compiler-runtime-CzTQW_0d.js"
+      "_compiler-runtime-Bir2Re2B.js"
     ]
   }
 }
