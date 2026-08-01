@@ -5,6 +5,7 @@ use App\Http\Controllers\TickerController;
 use App\Models\AngelOneProfile;
 use App\Models\AngelOneRms;
 use App\Models\AngelOneTopGainer;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -30,9 +31,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
     $renderDashboard = function () {
-        $topGainers = AngelOneTopGainer::all();
-        $profile = AngelOneProfile::latest()->first();
-        $rms = AngelOneRms::latest()->first();
+        try {
+            $topGainers = AngelOneTopGainer::all();
+            $profile = AngelOneProfile::latest()->first();
+            $rms = AngelOneRms::latest()->first();
+        } catch (Throwable $e) {
+            Log::error('Dashboard render error: '.$e->getMessage());
+            $topGainers = collect();
+            $profile = null;
+            $rms = null;
+        }
 
         return Inertia::render('dashboard', [
             'topGainers' => $topGainers,

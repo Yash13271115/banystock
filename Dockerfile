@@ -5,7 +5,6 @@ FROM php:8.4-cli-alpine AS vendor-builder
 WORKDIR /app
 
 RUN apk add --no-cache git unzip libzip-dev icu-dev
-
 RUN docker-php-ext-install zip intl
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -23,7 +22,7 @@ COPY artisan ./
 RUN composer dump-autoload --optimize --no-dev --no-scripts
 
 # ===================================================
-# Stage 3: Production Runtime (PHP-FPM + Nginx)
+# Stage 2: Production Runtime (PHP-FPM + Nginx)
 # ===================================================
 FROM php:8.4-fpm-alpine AS production
 WORKDIR /var/www/html
@@ -65,7 +64,7 @@ RUN echo "opcache.memory_consumption=128" >> /usr/local/etc/php/conf.d/docker-ph
     && echo "opcache.revalidate_freq=0" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini \
     && echo "opcache.validate_timestamps=0" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
 
-# Copy application files
+# Copy application files (including pre-built public/build)
 COPY . /var/www/html
 
 # Copy vendors from Stage 1
@@ -77,6 +76,9 @@ COPY docker/nginx.conf /etc/nginx/http.d/default.conf
 # Copy entrypoint
 COPY docker/entrypoint.prod.sh /usr/local/bin/entrypoint.prod.sh
 RUN chmod +x /usr/local/bin/entrypoint.prod.sh
+
+# Remove any stray hot file so Laravel always uses production bundle
+RUN rm -f /var/www/html/public/hot
 
 # Set directory permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
