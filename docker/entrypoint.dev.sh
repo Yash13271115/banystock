@@ -41,6 +41,14 @@ php artisan migrate --force
 echo "Seeding database..."
 php artisan db:seed --force
 
+# Pre-compile Blade views before Octane starts. Octane runs multiple concurrent
+# worker processes; without this, the first request(s) can race to compile the
+# same view file simultaneously, which is especially slow/flaky over a Docker
+# Desktop bind mount and can 500. Laravel still recompiles individual views on
+# change afterwards, so this doesn't affect hot-reloading during development.
+php artisan view:clear
+php artisan view:cache
+
 echo "Starting Vite dev server in background..."
 npm run dev -- --host 0.0.0.0 &
 

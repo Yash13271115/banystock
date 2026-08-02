@@ -57,7 +57,7 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd\" \"php artisan octane:frankenphp --host=0.0.0.0 --port=8000\" \"php artisan queue:listen --tries=1\" --names='octane,queue'"
+            "npx concurrently -c \"#93c5fd,#c4b5fd\" \"php artisan octane:frankenphp --host=0.0.0.0 --port=8000 --workers=4\" \"php artisan queue:listen --tries=1\" --names='octane,queue'"
         ],
         "lint": [
             "pint --parallel"
