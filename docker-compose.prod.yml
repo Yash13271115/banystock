@@ -15,6 +15,11 @@ services:
     depends_on:
       app:
         condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 64M
     networks:
       - banystock-prod-net
 
@@ -27,7 +32,7 @@ services:
       APP_ENV: production
       APP_DEBUG: "false"
       OCTANE_SERVER: frankenphp
-      FRANKENPHP_WORKERS: "${FRANKENPHP_WORKERS:-4}"
+      FRANKENPHP_WORKERS: "${FRANKENPHP_WORKERS:-2}"
       DB_CONNECTION: mysql
       DB_HOST: mysql
       DB_PORT: 3306
@@ -52,14 +57,14 @@ services:
       retries: 5
       start_period: 30s
     deploy:
-      replicas: ${APP_REPLICAS:-2}
+      replicas: ${APP_REPLICAS:-1}
       resources:
         limits:
           cpus: "1.0"
-          memory: 512M
-        reservations:
-          cpus: "0.25"
           memory: 256M
+        reservations:
+          cpus: "0.1"
+          memory: 128M
       restart_policy:
         condition: on-failure
         max_attempts: 3
@@ -94,7 +99,7 @@ services:
       resources:
         limits:
           cpus: "0.5"
-          memory: 256M
+          memory: 96M
       restart_policy:
         condition: on-failure
         max_attempts: 5
@@ -143,7 +148,7 @@ services:
       resources:
         limits:
           cpus: "1.0"
-          memory: 1024M
+          memory: 384M
     networks:
       - banystock-prod-net
 
@@ -151,6 +156,8 @@ services:
     image: redis:alpine
     container_name: banystock-prod-redis
     restart: always
+    environment:
+      REDIS_PASSWORD: "${REDIS_PASSWORD:?Set REDIS_PASSWORD in .env}"
     command: redis-server --requirepass "${REDIS_PASSWORD:?Set REDIS_PASSWORD in .env}"
     volumes:
       - banystock-prod-redis-data:/data
@@ -163,7 +170,7 @@ services:
       resources:
         limits:
           cpus: "0.5"
-          memory: 256M
+          memory: 128M
     networks:
       - banystock-prod-net
 
