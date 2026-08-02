@@ -1,16 +1,11 @@
 # ===================================================
-# Stage 1: PHP Production Vendor Builder
+# Stage 1: Composer dependencies
 # ===================================================
-FROM php:8.4-cli-alpine AS vendor-builder
+FROM composer:2 AS vendor-builder
 WORKDIR /app
 
-RUN apk add --no-cache git unzip libzip-dev icu-dev
-RUN docker-php-ext-install zip intl
-
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY composer.json composer.lock ./
-
-RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --no-interaction
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --no-interaction --ignore-platform-reqs
 
 COPY app/ ./app/
 COPY bootstrap/ ./bootstrap/
@@ -22,68 +17,43 @@ COPY artisan ./
 RUN composer dump-autoload --optimize --no-dev --no-scripts
 
 # ===================================================
-# Stage 2: Production Runtime (PHP-FPM + Nginx)
+# Stage 2: Production runtime — FrankenPHP / Octane
+# (same base as Dockerfile.dev, so prod matches the
+#  Octane semantics the app is actually written for)
 # ===================================================
-FROM php:8.4-fpm-alpine AS production
+FROM dunglas/frankenphp:1-php8.4-alpine AS production
 WORKDIR /var/www/html
 
-# Install Nginx and runtime dependencies
-RUN apk add --no-cache \
-    nginx \
-    bash \
-    curl \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
-    libzip-dev \
-    icu-dev \
-    oniguruma-dev \
-    netcat-openbsd \
-    $PHPIZE_DEPS
+RUN install-php-extensions \
+    pdo_mysql \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    intl \
+    zip \
+    opcache \
+    redis
 
-# Install PHP extensions
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) \
-        pdo_mysql \
-        mbstring \
-        exif \
-        pcntl \
-        bcmath \
-        gd \
-        intl \
-        zip \
-        opcache
+RUN apk add --no-cache bash curl netcat-openbsd
 
-# Install Redis extension
-RUN pecl install redis && docker-php-ext-enable redis
+RUN { \
+    echo "opcache.memory_consumption=128"; \
+    echo "opcache.interned_strings_buffer=8"; \
+    echo "opcache.max_accelerated_files=10000"; \
+    echo "opcache.revalidate_freq=0"; \
+    echo "opcache.validate_timestamps=0"; \
+    } > /usr/local/etc/php/conf.d/opcache-prod.ini
 
-# Configure OPcache for production
-RUN echo "opcache.memory_consumption=128" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini \
-    && echo "opcache.interned_strings_buffer=8" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini \
-    && echo "opcache.max_accelerated_files=10000" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini \
-    && echo "opcache.revalidate_freq=0" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini \
-    && echo "opcache.validate_timestamps=0" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
-
-# Copy application files (including pre-built public/build)
 COPY . /var/www/html
-
-# Copy vendors from Stage 1
 COPY --from=vendor-builder /app/vendor /var/www/html/vendor
 
-# Configure Nginx
-COPY docker/nginx.conf /etc/nginx/http.d/default.conf
-
-# Copy entrypoint
 COPY docker/entrypoint.prod.sh /usr/local/bin/entrypoint.prod.sh
 RUN chmod +x /usr/local/bin/entrypoint.prod.sh
 
-# Remove any stray hot file so Laravel always uses production bundle
-RUN rm -f /var/www/html/public/hot
-
-# Set directory permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+RUN rm -f /var/www/html/public/hot \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-EXPOSE 80
-
+EXPOSE 8000
 ENTRYPOINT ["/usr/local/bin/entrypoint.prod.sh"]

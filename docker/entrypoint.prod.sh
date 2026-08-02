@@ -12,7 +12,6 @@ fi
 
 # Ensure storage directories exist and have proper permissions
 mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache
-chown -R www-data:www-data storage bootstrap/cache
 chmod -R 775 storage bootstrap/cache
 
 # Ensure clean bootstrap cache before optimizing
@@ -25,14 +24,16 @@ php artisan route:cache
 php artisan view:cache
 php artisan event:cache
 
-# Run database migrations
-echo "Running database migrations..."
-php artisan migrate --force
-
 # Ensure storage link exists
 php artisan storage:link --force || true
 
-# Start Supervisor (which manages PHP-FPM and Nginx) or start PHP-FPM + Nginx
-echo "Starting production server..."
-php-fpm -D
-exec nginx -g 'daemon off;'
+# Migrations are run separately via the one-off `migrate` service/profile
+# (docker compose -f docker-compose.prod.yml --profile migrate run --rm migrate)
+# so concurrent replicas starting during a scale-out never race each other.
+
+echo "Starting Octane (FrankenPHP) with ${FRANKENPHP_WORKERS:-4} workers..."
+exec php artisan octane:frankenphp \
+    --host=0.0.0.0 \
+    --port=8000 \
+    --workers="${FRANKENPHP_WORKERS:-4}" \
+    --max-requests=500
